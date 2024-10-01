@@ -1,0 +1,44 @@
+.border{ border: 1px solid #000; }
+.page{ 
+  width: 100%;
+  max-width: 500px; 
+  min-height: 100vh;
+  margin: auto;
+  .content{
+    padding: 0px 24px;
+  }
+  .home-content{
+    padding: 0px 32px;
+  }
+  .button-content{
+    width: 100%;
+    padding-top: 54px;
+    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+}
+
+/** Vant Collapse */
+.van-collapse-item__title{
+  border-radius: 24px !important;
+}
+.van-collapse-item__wrapper{
+  border-radius: 24px !important;
+}
+
+:root:root {
+  //- BackToTop Background
+  --van-back-top-background: #8C9D87;
+  //- Text Field Input Disabled
+  --van-field-input-disabled-text-color: #939393;
+}
+
+/** Text Color */
+.text-green{
+  color: green !important;
+}
+.text-red{
+  color: rgb(184, 75, 75) !important;
+}
