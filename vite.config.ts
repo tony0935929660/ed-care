@@ -21,7 +21,7 @@ export default defineConfig({
     cors: true, // 允许跨域
     proxy: {
       "/apidata": {
-        target: "https://mature-lively-puma.ngrok-free.app",
+        target: "https://edcare-home.serveirc.com",
         ws: true,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/apidata/, "")

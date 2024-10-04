@@ -8,5 +8,5 @@ request(
     url: `/login?${convertToQueryString(params)}`,
     method: 'get',
   },
-  "LINELOGIN"
+  "APIDATA"
 );
