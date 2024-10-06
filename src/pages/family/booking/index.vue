@@ -251,6 +251,7 @@ export default defineComponent({
       ])
       .then(axios.spread((bookingList: IGetBooking[], targetList: IGetCliTarget[], hospitalList: any) => {
         apiData.value = [...bookingList.reverse()];
+        console.log(targetList)
         targetRealName.value = targetList.map((item: IGetCliTarget) => {
           return {
             text: item.cliTargetRealName,

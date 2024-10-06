@@ -38,18 +38,21 @@
                 Select(v-model="memberParams.serviceTarget" :title="'選擇服務對象'" :subtitle="'請選擇需服務對象'" :columns="cliServiceTarget" @click="curSelectKey = 'serviceTarget'")
                 TextField(v-model="memberParams.targetRealName" :title="'服務對象真實姓名'" :subtitle="'輸入服務對象真實姓名'")
                 Select(v-model="memberParams.gender" :title="'選擇性別'" :subtitle="'輸入服務對象性別'" :columns="cliGender" @click="curSelectKey = 'gender'")
-                TextField(v-model="memberParams.age" :title="'選擇年紀'" :subtitle="'輸入服務對象年紀'")
-                TextField(v-model="memberParams.height" :title="'選擇身高'" :subtitle="'輸入服務對象身高'")
-                TextField(v-model="memberParams.weight" :title="'選擇體重'" :subtitle="'輸入服務對象體重'")
-                TextField(v-model="memberParams.emergencyContact" :title="'緊急聯絡人'" :subtitle="'緊急聯絡人'")
+                Select(v-model="memberParams.age" :title="'選擇年紀'" :subtitle="'輸入服務對象年紀'" :columns="cliAge" @click="curSelectKey = 'age'")
+                Select(v-model="memberParams.height" :title="'選擇身高'" :subtitle="'輸入服務對象身高'" :columns="cliHeight" @click="curSelectKey = 'height'")
+                Select(v-model="memberParams.weight" :title="'選擇體重'" :subtitle="'輸入服務對象體重'" :columns="cliWeight" @click="curSelectKey = 'weight'")
+                .input-row
+                  Select(v-model="memberParams.emergencyContactType" :title="'緊急聯絡人'" :subtitle="'緊急聯絡人'" :columns="cliEmergencyContact" @click="curSelectKey = 'emergencyContactType'")
+                  TextField(v-model="memberParams.emergencyContact")
                 Phone(v-model="memberParams.emergencyPhone" :title="'緊急聯絡人電話'" :subtitle="'輸入緊急聯絡人電話'")
             .stepper-btn(@click.prevent="next('02')") 下一步
           .step-session(:class="{'active': finishedStep[finishedStep.length - 1] == '02'}")
             .form 
               Checkbox(v-model="memberParams.diseaseStatus" :title="'選擇當事人的目前疾病狀況'" :subtitle="'請至少選一項'" :columns="cliDiseaseStatus")
+              Input()
               Checkbox(v-model="memberParams.otherConditions" :title="'是否有以下情形？'" :subtitle="'可複選'" :columns="cliOtherConditions")
-              Checkbox(v-model="memberParams.mobilityAssistances" :title="'長輩行動能力'" :subtitle="'可複選'" :columns=" cliMobilityAssistances")
-              Checkbox(v-model="memberParams.pipeStatus" :title="'服務對象管路狀況'" :subtitle="'可複選'" :columns="cliPipeStatus")
+              //- Checkbox(v-model="memberParams.mobilityAssistances" :title="'長輩行動能力'" :subtitle="'可複選'" :columns=" cliMobilityAssistances")
+              //- Checkbox(v-model="memberParams.pipeStatus" :title="'服務對象管路狀況'" :subtitle="'可複選'" :columns="cliPipeStatus")
               Checkbox(v-model="memberParams.languages" :title="'常用語言'" :subtitle="'可複選'" :columns="cliLanguages")
             .stepper-btn(@click.prevent="next('03')") 完成提交
           .step-session(:class="{'active': finishedStep[finishedStep.length - 1] == '03'}")
@@ -60,7 +63,7 @@
                 p 立即查看家屬資料!
               .return-text(@click.prevent="stepperReset()") 返回新增家屬資料
                 
-    template(#tab-content2) 
+    template(#tab-content2)
       CollapseCard(:memberList="apiData")
   van-back-top(offset="100" bottom="12vh") 
   van-popup(v-model:show="isPickerShow" round position="bottom")
@@ -145,10 +148,15 @@ export default defineComponent({
 
     /** Data Options */
     const cliServiceTarget = ref([
+      { text: '祖父', value: '祖父' },
+      { text: '祖母', value: '祖母' },
+      { text: '岳父', value: '岳父' },
+      { text: '岳母', value: '岳母' },
       { text: '父親', value: '父親' },
       { text: '母親', value: '母親' },
       { text: '兒子', value: '兒子' },
       { text: '女兒', value: '女兒' },
+      { text: '其他', value: '其他' },
     ]);
     const cliGender = ref([
       { text: '男性', value: '男性' },
@@ -168,8 +176,8 @@ export default defineComponent({
       { text: '手術照顧', value: '手術照顧' },
       { text: '精神疾病', value: '精神疾病' },
       { text: '褥瘡（壓瘡）', value: '褥瘡（壓瘡）' },
-      { text: '其他疾病', value: '其他疾病' },
       { text: '無', value: '無' },
+      { text: '其他', value: '其他' },
     ]);
     const cliOtherConditions = ref([
       { text: '失智', value: '失智' },
@@ -178,6 +186,7 @@ export default defineComponent({
       { text: '糖尿病', value: '糖尿病' },
       { text: '情緒低落', value: '情緒低落' },
       { text: '無特殊狀況', value: '無特殊狀況' },
+      { text: '其他', value: '其他' },
     ]);
     const cliMobilityAssistances = ref([
       { text: '協助沐浴', value: '協助沐浴' },
@@ -208,15 +217,25 @@ export default defineComponent({
       { text: '日語', value: '日語' },
       { text: '其他', value: '其他' },
     ]);
+    const cliEmergencyContact = ref([
+      { text: '父子', value: '父子' },
+      { text: '⽗女', value: '⽗女' },
+      { text: '⺟⼦', value: '⺟⼦' },
+      { text: '⺟女', value: '⺟女' },
+      { text: '其他', value: '其他' },
+    ]);
+    const cliAge = ref(Array.from({ length: 83 }, (_, i) => ({ text: (i + 18).toString(), value: i + 18 })));
+    const cliHeight = ref(Array.from({ length: 71 }, (_, i) => ({ text: (i + 130).toString(), value: i + 130 })));
+    const cliWeight = ref(Array.from({ length: 61 }, (_, i) => ({ text: (i + 40).toString(), value: i + 40 })));
 
     /** Data Params */
     const memberParams = ref({
       serviceTarget: '父親',
       targetRealName: '',
       gender: '男性',
-      age: '',
-      height: '',
-      weight: '',
+      age: '50',
+      height: '150',
+      weight: '50',
       emergencyContact: '',
       emergencyPhone: '',
       diseaseStatus: [],
@@ -294,6 +313,10 @@ export default defineComponent({
       cliMobilityAssistances,
       cliPipeStatus,
       cliLanguages,
+      cliAge,
+      cliHeight,
+      cliWeight,
+      cliEmergencyContact,
       memberParams,
       next,
       stepperReset,
@@ -504,5 +527,15 @@ export default defineComponent({
   font-weight: 700;
   line-height: 140%; /* 19.6px */
   letter-spacing: 0.56px;
+}
+.input-row{
+  display: flex;
+  gap: 8px;
+}
+input{
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #6D6D6D;
+  outline: none;
 }
 </style>

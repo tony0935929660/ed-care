@@ -13,10 +13,10 @@
         van-field(
           v-model='value' 
           placeholder='請填寫' 
-          type="number" 
+          type="tel"
           @blur="submit()"
           autocomplete="off"
-          :rules="[{ required: true, message: '此欄位為必填欄位' }]"
+          :rules="[{ required: true, message: '此欄位為必填欄位' },{ validator: verifyPhone, message: '請輸入有效的手機號碼（格式：09XXXXXXXX）' }]"
           style="background-color: #FBFBFB;"
         )
 </template>
@@ -39,12 +39,16 @@ export default defineComponent({
     const submit = () => {
       emit('update:modelValue', value.value);
     }
+    const verifyPhone = (val) => {
+      return /^09\d{8}$/.test(val)
+    }
     return {
       title,
       subtitle,
       value,
       TW,
       submit,
+      verifyPhone
     }
   }
 })
