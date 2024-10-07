@@ -47,10 +47,9 @@
                 Phone(v-model="memberParams.emergencyPhone" :title="'緊急聯絡人電話'" :subtitle="'輸入緊急聯絡人電話'")
             .stepper-btn(@click.prevent="next('02')") 下一步
           .step-session(:class="{'active': finishedStep[finishedStep.length - 1] == '02'}")
-            .form 
-              Checkbox(v-model="memberParams.diseaseStatus" :title="'選擇當事人的目前疾病狀況'" :subtitle="'請至少選一項'" :columns="cliDiseaseStatus")
-              Input()
-              Checkbox(v-model="memberParams.otherConditions" :title="'是否有以下情形？'" :subtitle="'可複選'" :columns="cliOtherConditions")
+            .form
+              Checkbox(v-model="memberParams.diseaseStatus" :title="'選擇當事人的目前疾病狀況'" :subtitle="'請至少選一項'" :columns="cliDiseaseStatus" :isOthers="true")
+              Checkbox(v-model="memberParams.otherConditions" :title="'是否有以下情形？'" :subtitle="'可複選'" :columns="cliOtherConditions" :isOthers="true")
               //- Checkbox(v-model="memberParams.mobilityAssistances" :title="'長輩行動能力'" :subtitle="'可複選'" :columns=" cliMobilityAssistances")
               //- Checkbox(v-model="memberParams.pipeStatus" :title="'服務對象管路狀況'" :subtitle="'可複選'" :columns="cliPipeStatus")
               Checkbox(v-model="memberParams.languages" :title="'常用語言'" :subtitle="'可複選'" :columns="cliLanguages")
@@ -122,8 +121,8 @@ export default defineComponent({
         if(
           memberParams.value.diseaseStatus.length == 0 ||
           memberParams.value.otherConditions.length == 0 ||
-          memberParams.value.mobilityAssistances.length == 0 ||
-          memberParams.value.pipeStatus.length == 0 ||
+          // memberParams.value.mobilityAssistances.length == 0 ||
+          // memberParams.value.pipeStatus.length == 0 ||
           memberParams.value.languages.length == 0
         ) {
           showToast('尚有選項未勾選');
@@ -531,11 +530,5 @@ export default defineComponent({
 .input-row{
   display: flex;
   gap: 8px;
-}
-input{
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid #6D6D6D;
-  outline: none;
 }
 </style>

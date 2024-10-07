@@ -31,9 +31,10 @@
                 Select(v-model="bookingParams.hospital" :title="'醫院'" :subtitle="'請選擇醫院'" :columns="hospital" @click="curSelectKey = 'hospital'")
                 TextField(v-model="bookingParams.department" :title="'門診'" :subtitle="'輸入門診名稱'")
                 TextField(v-model="bookingParams.departmentNumber" :title="'門診號碼'" :subtitle="'輸入門診號碼'")
+                TextField(:title="'看診號碼'" :subtitle="'輸入看診號碼'")
                 DatePicker(v-model="bookingParams.appointmentDate" :title="'預約日期'" :subtitle="'輸入預約日期'")
                 TimePicker(v-model="bookingParams.appointmentTime" :title="'預約時間'" :subtitle="'輸入預約時間'")
-                Select(v-model="bookingParams.serviceHours" :title="'服務時數'" :subtitle="'選擇服務時數'" :columns="serviceHours" @click="curSelectKey = 'serviceHours'")
+                Select(v-model="bookingParams.serviceHours" :title="'服務時數'" :subtitle="'服務計費以實際服務時數為主'" :columns="serviceHours" @click="curSelectKey = 'serviceHours'")
                 TextField(v-model="bookingParams.pickupAddress" :title="'接送地址'" :subtitle="'輸入接送地址'")
             .stepper-btn(@click.prevent="next('02')") 確認預約
           .step-session(:class="{'active': finishedStep[finishedStep.length - 1] == '02'}")
@@ -167,7 +168,16 @@ export default defineComponent({
     }
     const dateFormatter = (day: any) => {
       let week = day.date.getDay();
+
+      let today = new Date();
+      let threeDaysLater = new Date();
+      threeDaysLater.setDate(today.getDate() + 2);
+
       if(week == 0 || week == 6) {
+        day.type = 'disabled';
+      }
+
+      if(day.date < threeDaysLater) {
         day.type = 'disabled';
       }
       return day;
