@@ -31,11 +31,14 @@
                 Select(v-model="bookingParams.hospital" :title="'醫院'" :subtitle="'請選擇醫院'" :columns="hospital" @click="curSelectKey = 'hospital'")
                 TextField(v-model="bookingParams.department" :title="'門診'" :subtitle="'輸入門診名稱'")
                 TextField(v-model="bookingParams.departmentNumber" :title="'門診號碼'" :subtitle="'輸入門診號碼'")
-                TextField(:title="'看診號碼'" :subtitle="'輸入看診號碼'")
+                TextField(v-model="bookingParams.clinicNumber" :title="'看診號碼'" :subtitle="'輸入看診號碼'")
                 DatePicker(v-model="bookingParams.appointmentDate" :title="'預約日期'" :subtitle="'輸入預約日期'")
                 TimePicker(v-model="bookingParams.appointmentTime" :title="'預約時間'" :subtitle="'輸入預約時間'")
                 Select(v-model="bookingParams.serviceHours" :title="'服務時數'" :subtitle="'服務計費以實際服務時數為主'" :columns="serviceHours" @click="curSelectKey = 'serviceHours'")
-                TextField(v-model="bookingParams.pickupAddress" :title="'接送地址'" :subtitle="'輸入接送地址'")
+                .input-row
+                  Select(v-model="bookingParams.pickupAddressCity" :title="'接送地址'" :subtitle="'輸入接送地址'" :columns="city" @click="curSelectKey = 'pickupAddressCity'")
+                  Select(v-model="bookingParams.pickupAddressTown" :columns="town" @click="curSelectKey = 'pickupAddressTown'")
+                TextField(v-model="bookingParams.pickupAddress")
             .stepper-btn(@click.prevent="next('02')") 確認預約
           .step-session(:class="{'active': finishedStep[finishedStep.length - 1] == '02'}")
             .complete-container 
@@ -158,6 +161,14 @@ export default defineComponent({
     /** Data Options */
     const targetRealName = ref<ISysDropDown []>([]);
     const hospital = ref<ISysDropDown []>([]);
+    const city = ref([
+      { text: '雲林縣', value: '雲林縣' }
+    ]);
+    const town = ref([
+      { text: '斗六', value: '斗六' },
+      { text: '斗南', value: '斗南' },
+      { text: '虎尾', value: '虎尾' }
+    ]);
 
     // Date
     const isDatePickerShow = computed(() => systemStore.GET_IS_PICKER_DATE_SHOW);
@@ -302,6 +313,8 @@ export default defineComponent({
       complete,
       targetRealName,
       hospital,
+      city,
+      town,
       serviceHours,
       bookingParams,
       next,
@@ -524,5 +537,10 @@ export default defineComponent({
   font-weight: 700;
   line-height: 140%; /* 19.6px */
   letter-spacing: 0.56px;
+}
+
+.input-row{
+  display: flex;
+  gap: 8px;
 }
 </style>

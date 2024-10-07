@@ -73,4 +73,7 @@ export default defineComponent({
     background: #FBFBFB;
   }
 }
+.form-item .optional-mark {
+  width: 1em; /* Fixed width for the span to maintain spacing */
+}
 </style>

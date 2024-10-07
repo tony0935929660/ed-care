@@ -1,6 +1,6 @@
 <template lang="pug">
 .form-item 
-  .label  
+  .label(v-if="title")
     .title {{ title }}
     .subtitle {{ subtitle }}
     span *

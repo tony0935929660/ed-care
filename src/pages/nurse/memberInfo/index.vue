@@ -49,7 +49,7 @@
       Phone(v-model="nurseMemberInfo.contactNumber" :title="'輸入聯絡電話'" :subtitle="'輸入您的聯絡電話'")
       TextField(v-model="nurseMemberInfo.rAddress" :title="'輸入聯絡地址'" :subtitle="'輸入您的聯絡地址'")
       TextField(v-model="nurseMemberInfo.aCompany" :title="'輸入隸屬公司'" :subtitle="'輸入您的公司，若沒有則填無'")
-      TextField(v-model="nurseMemberInfo.aPaymentAccount" :title="'輸入收款帳戶'" :subtitle="'輸入您的收款帳戶'")
+      //- TextField(v-model="nurseMemberInfo.aPaymentAccount" :title="'輸入收款帳戶'" :subtitle="'輸入您的收款帳戶'")
       TextArea(v-model="nurseMemberInfo.aautobiography" :title="'填寫自我介紹'" :subtitle="'輸入50字以內的簡介'")
     .form-btn(@click.prevent="onSubmit()") 完成提交
 
@@ -111,7 +111,7 @@ export default defineComponent({
       userLineId: profile.value._CLIENT_PROFILE_KEY,
       realName: '',
       gender: '',
-      age: 0,
+      age: null,
       contactNumber: '',
       rAddress: '',
       aCompany: '',
