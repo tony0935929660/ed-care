@@ -1,5 +1,9 @@
 <template lang="pug">
 .button-content
+  MenuBtn(
+    :img='rollback' :name="'返回'"
+    @click.prevent="router.back()"
+  )
   MenuBtn(  
     :img='family' :name="'家庭用戶'"
     @click.prevent="router.push('/edcareAuth/adminFamily')"
@@ -15,6 +19,7 @@ import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import family from '@/assets/image/family.png';
 import nurse from '@/assets/image/nurse.png';
+import rollback from '@/assets/image/rollback.png';
 import MenuBtn from '@/components/menuBtn.vue';
 
 export default defineComponent({
@@ -27,6 +32,7 @@ export default defineComponent({
       family,
       nurse,
       router,
+      rollback
     }
   }
 })

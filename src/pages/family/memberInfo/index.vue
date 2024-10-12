@@ -15,7 +15,7 @@
         .right * 為必填欄位
       ReadOnlyField(v-model="memberInfo.lineName" :title="'姓名'")
       Select(v-model="memberInfo.gender" :title="'選擇性別'" :subtitle="'輸入您的性別'" :columns="gender" @click="curSelectKey = 'gender'")
-      TextField(v-model="memberInfo.email" :title="'輸入電子信箱'" :subtitle="'輸入您的電子信箱'")
+      Email(v-model="memberInfo.email" :title="'輸入電子信箱'" :subtitle="'輸入您的電子信箱'")
       Phone(v-model="memberInfo.phone" :title="'輸入電話'" :subtitle="'輸入您的電話'")
     .form-btn(@click.prevent="onSubmit()") 完成提交
 
@@ -32,12 +32,14 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
 import { useApp, useSystem, useUser } from '@/store';
+import { useRouter } from 'vue-router';
 import { IMemberInfo } from '@/Interface';
 import { postMemberInfo, getMemberInfo } from '@/api/family/memberInfo';
 import { showLoadingToast } from 'vant';
 import ReadOnlyField from '@/components/readOnlyField.vue';
 import Select from '@/components/select.vue';
 import Phone from '@/components/phone.vue';
+import Email from '@/components/email.vue';
 import TextField from '@/components/textField.vue';
 
 export default defineComponent({
@@ -46,9 +48,11 @@ export default defineComponent({
     Select,
     Phone,
     TextField,
+    Email
   },
   setup () {
     const appStore = useApp();
+    const router = useRouter();
     const profile = computed(() => appStore.GET_CLIENT_PROFILE);
 
     const memberInfo = ref<IMemberInfo>({
@@ -88,6 +92,7 @@ export default defineComponent({
       await postMemberInfo(params)
       .then((res: any) => {
         console.log(res);
+        router.back();
       })
       .finally(() => loadData());
     }
