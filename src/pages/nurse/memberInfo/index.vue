@@ -43,7 +43,7 @@
       .title 
         .left 註冊會員
         .right * 為必填欄位
-      ReadOnlyField(v-model="nurseMemberInfo.realName" :title="'姓名'")
+      TextField(v-model="nurseMemberInfo.realName" :title="'姓名'")
       Select(v-model="nurseMemberInfo.gender" :title="'選擇性別'" :subtitle="'輸入您的性別'" :columns="gender" @click="curSelectKey = 'gender'")
       TextField(v-model="nurseMemberInfo.age" :title="'輸入年紀'" :subtitle="'輸入您的年紀'")
       Phone(v-model="nurseMemberInfo.contactNumber" :title="'輸入聯絡電話'" :subtitle="'輸入您的聯絡電話'")
@@ -162,6 +162,7 @@ export default defineComponent({
       await postNurseMemberInfo(params)
       .then((res: any) => {
         console.log(res);
+        showToast('我們已經收到您的申請資料，會盡快與您聯繫，感謝！');
       })
       .finally(() => loadData());
     }
@@ -213,8 +214,8 @@ export default defineComponent({
       else{
         const formData = new FormData();
         formData.append('userLineId', profile.value._CLIENT_PROFILE_KEY);
-        formData.append('headshot', uploadFile.value.headshot[0]);
-        formData.append('certificate', uploadFile.value.certificate[0]);
+        formData.append('headshot', uploadFile.value.headshot[0].content ?? null);
+        formData.append('certificate', uploadFile.value.certificate[0].content ?? null);
         let loading = showLoadingToast({
           message: '加载中...',
           forbidClick: true,

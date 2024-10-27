@@ -24,6 +24,14 @@ CollapseCard(
       span {{ item }}
       van-icon(name="location")
     .value(v-else) - -
+  template(#action="{ item }")
+    .card-action(v-if="item.doctorOrders")
+      .alert.warning
+        .notice.w-100
+          .icon
+            img(:src="doctor")
+          .text
+            b 醫生指示：{{ item.doctorOrders }}
 </template>
 
 <script lang="ts">

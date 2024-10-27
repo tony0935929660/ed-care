@@ -50,13 +50,13 @@ van-popup(v-model:show="isPickerShow" round position="bottom")
     .evaluate-textField
       .label 
         .text 醫生指示
-        .counter {{ doctorOrders.length }}/50
+        .counter {{ doctorOrders.length }}/300
       .input 
         van-field(
           v-model="doctorOrders"
           type="textarea" rows="2"
           autosize
-          maxlength="50"
+          maxlength="300"
           placeholder="請填寫本次預約醫生指示"
         )
     .actions 

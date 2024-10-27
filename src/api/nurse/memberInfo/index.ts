@@ -39,5 +39,5 @@ request(
     method: 'post',
     data: params
   },
-  "APIUPLOADFILE"
+  "APIDATA"
 );

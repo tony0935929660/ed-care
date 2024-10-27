@@ -35,8 +35,8 @@ CollapseCard(
             b 提醒 : 最終陪診員，
             br 
             b 由預約者決定
-        .right-disable-btn(v-if="item.takeOrder") 已排單
-        .right-btn(v-else @click.stop="receive(item.orderId)") 排單
+        .right-disable-btn(v-if="item.takeOrder") 已接單
+        .right-btn(v-else @click.stop="receive(item.orderId)") 接單
 
 </template>
 
@@ -74,7 +74,7 @@ export default defineComponent({
     const profile = computed(() => appStore.GET_CLIENT_PROFILE);
     const receive = (orderId: string) => {
       showConfirmDialog({
-        title: '請確定是否要進行排單',
+        title: '請確定是否要進行接單',
         message: '提醒：陪診員選擇預想接獲的預約，最終由預約者決定確定陪診員。',
         confirmButtonText: '確定',
         cancelButtonText: '取消',
@@ -94,7 +94,7 @@ export default defineComponent({
             loading.close();
           })
           .finally(() => {
-            showSuccessToast('完成排單');
+            showSuccessToast('完成接單');
             history.go(0);
           })
         })

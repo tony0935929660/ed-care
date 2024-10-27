@@ -43,7 +43,7 @@
                 Select(v-model="memberParams.weight" :title="'選擇體重'" :subtitle="'輸入服務對象體重'" :columns="cliWeight" @click="curSelectKey = 'weight'")
                 .input-row
                   Select(v-model="memberParams.emergencyContactType" :title="'緊急聯絡人'" :subtitle="'緊急聯絡人'" :columns="cliEmergencyContact" @click="curSelectKey = 'emergencyContactType'")
-                  TextField(v-model="memberParams.emergencyContact")
+                  TextField(v-model="memberParams.emergencyContact" :title="' '")
                 Phone(v-model="memberParams.emergencyPhone" :title="'緊急聯絡人電話'" :subtitle="'輸入緊急聯絡人電話'")
             .stepper-btn(@click.prevent="next('02')") 下一步
           .step-session(:class="{'active': finishedStep[finishedStep.length - 1] == '02'}")
@@ -529,6 +529,7 @@ export default defineComponent({
 }
 .input-row{
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 </style>

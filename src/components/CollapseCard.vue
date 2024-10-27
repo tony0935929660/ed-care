@@ -11,7 +11,7 @@ van-collapse.system-collapse(
         template(#right-icon)
           slot(name="right" :item="item")
         .detail 
-          .detail-item(v-for="(detail, index) in detailItems")
+          .detail-item(v-for="(detail, index) in detailItems" :class="{ 'full-width': detail.label === '電子信箱' }")
             slot(:name="detail.key" :item="item[detail.key]")
               .label {{ detail.label }}
               .value {{ item[detail.key]? item[detail.key]: '- -'}}
@@ -40,3 +40,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+.full-width {
+  width: 100% !important;
+}
+</style>

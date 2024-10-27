@@ -41,13 +41,37 @@
                 TextField(v-model="bookingParams.pickupAddress")
             .stepper-btn(@click.prevent="next('02')") 確認預約
           .step-session(:class="{'active': finishedStep[finishedStep.length - 1] == '02'}")
-            .complete-container 
-              img(:src="complete")
-              .complete-text 
-                p 預約完成
-                p 立即查看預約資料!
+          .complete-container(v-if="submitData")
+            .complete-container__title 預約完成
+            .complete-container__content
+              .row
+                .label 預定編號:
+                .value {{ submitData.orderId }}
+              .row
+                .label 醫院:
+                .value {{ submitData.hospital }}
+              .row
+                .label 科別:
+                .value {{ submitData.department }}
+              .row
+                .label 門診號碼:
+                .value {{ submitData.departmentNumber }}
+              .row
+                .label 日期:
+                .value {{ submitData.appointmentDate }}
+              .row
+                .label 時間:
+                .value {{ submitData.appointmentTime }}
+              .row
+                .label 服務時數:
+                .value {{ submitData.serviceHours }}
+              .row
+                .label 接送地址:
+                .value {{ submitData.pickupAddress }}
+              .row
+                .label 預估金額:
+                .value {{ submitData.estimate }}
               .return-text(@click.prevent="stepperReset()") 返回新增預約資料
-                
     template(#tab-content2) 
       CollapseCard(:bookingList="apiData")
   van-back-top(offset="100" bottom="12vh") 
@@ -165,9 +189,9 @@ export default defineComponent({
       { text: '雲林縣', value: '雲林縣' }
     ]);
     const town = ref([
-      { text: '斗六', value: '斗六' },
-      { text: '斗南', value: '斗南' },
-      { text: '虎尾', value: '虎尾' }
+      { text: '斗六市', value: '斗六市' },
+      { text: '斗南鎮', value: '斗南鎮' },
+      { text: '虎尾鎮', value: '虎尾鎮' }
     ]);
 
     // Date
@@ -290,13 +314,16 @@ export default defineComponent({
     }
 
     /** Submit Member */
+    const submitData = ref();
     const onSubmit = async() => {
+      bookingParams.value.pickupAddress = bookingParams.value.pickupAddressCity + bookingParams.value.pickupAddressTown + bookingParams.value.pickupAddress;
       let params = {
         userLineId: profile._CLIENT_PROFILE_KEY as string,
         ...bookingParams.value
       }
       await postBooking(params)
       .then((res: any) => {
+        submitData.value = res;
         console.log(res);
       })
       .finally(() => loadData());
@@ -328,6 +355,7 @@ export default defineComponent({
 
       apiData,
       onSubmit,
+      submitData,
 
       isDatePickerShow,
       currentDate,
@@ -476,14 +504,23 @@ export default defineComponent({
 }
 
 .complete-container{
-  width: 270px;
-  height: 270px;
+  width: 300px;
   position: relative;
   margin: 54px auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  padding: 10px;
+  color: #8C9D87;
+  .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px;
+    .label {
+      width: 30%;
+    }
+  }
   img {
     width: 250px;
     height: 250px;
@@ -504,8 +541,8 @@ export default defineComponent({
     }
   }
   .return-text{
-    position: absolute;
-    bottom: -40px;
+    display: flex;
+    justify-content: center;
     color: #8C9D87;
     font-size: 16px;
     font-weight: 400;
