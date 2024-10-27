@@ -1,6 +1,6 @@
 <template lang="pug">
 .form-item 
-  .label  
+  .label(v-if="title")
     .title {{ title }}
     .subtitle {{ subtitle }}
     span *
@@ -44,6 +44,7 @@ export default defineComponent({
 .form-item{
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   gap: 5px;
   .label{
     display: flex;
