@@ -9,8 +9,12 @@
     @click.prevent="checkRegister('/edcareAuth/familyMemberCenter')"
   )
   MenuBtn(
-    :img='booking' :name="'預約及查詢'" :isRegister="isRegister"
+    :img='booking' :name="'新增預約'" :isRegister="isRegister"
     @click.prevent="checkRegister('/edcareAuth/familyBooking')"
+  )
+  MenuBtn(
+    :img='inquiry' :name="'查詢預約'" :isRegister="isRegister"
+    @click.prevent="checkRegister('/edcareAuth/familyBookingInquiry')"
   )
   MenuBtn(
     :img='history' :name="'預約紀錄'" :isRegister="isRegister"
@@ -27,6 +31,7 @@ import memberInfo from '@/assets/image/member-info.png';
 import memberCenter from '@/assets/image/member-center.png';
 import booking from '@/assets/image/booking.png';
 import history from '@/assets/image/history.png';
+import inquiry from '@/assets/image/inquiry.png';
 import MenuBtn from '@/components/menuBtn.vue';
 
 
@@ -52,6 +57,7 @@ export default defineComponent({
       memberInfo,
       memberCenter,
       booking,
+      inquiry,
       history,
       router,
       isRegister,

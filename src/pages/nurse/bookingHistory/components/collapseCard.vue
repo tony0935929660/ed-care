@@ -25,7 +25,7 @@ CollapseCard(
       van-icon(name="location")
     .value(v-else) - -
   template(#action="{ item }")
-    .card-action(v-if="item.doctorOrders")
+    .card-action(v-if="item.doctorOrders && item.doctorOrders!='-1'")
       .alert.warning
         .notice.w-100
           .icon

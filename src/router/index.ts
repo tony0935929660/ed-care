@@ -107,10 +107,22 @@ const routes =  [
           title: 'familyBooking', 
           requireAuth: true,
           account: 'member',
-          breadcrumb_title : '預約及查詢',
+          breadcrumb_title : '新增預約',
           breadcrumb_subtitle : 'Appointment Inquiry',
         },
         component: () => import("@/pages/family/booking/index.vue"),
+      },
+      {
+        name: "familyBookingInquiry",
+        path: "familyBookingInquiry",
+        meta: {
+          title: 'familyBookingInquiry', 
+          requireAuth: true,
+          account: 'member',
+          breadcrumb_title : '查詢預約',
+          breadcrumb_subtitle : 'Appointment Inquiry',
+        },
+        component: () => import("@/pages/family/bookingInquiry/index.vue"),
       },
       {
         name: "familyBookingHistory",

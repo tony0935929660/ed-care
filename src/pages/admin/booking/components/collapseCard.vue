@@ -25,7 +25,7 @@ CollapseCard(
       van-icon(name="location")
     .value(v-else) - -
   template(#action="{ item }")
-    .card-action(v-if="item.doctorOrders")
+    .card-action(v-if="item.doctorOrders && item.doctorOrders != '-1'")
       .alert.warning
         .notice.w-100
           .icon
@@ -37,6 +37,7 @@ CollapseCard(
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
 import order from '@/assets/image/order.png';
+import doctor from '@/assets/image/doctor.png';
 import CollapseCard from "@/components/CollapseCard.vue";
 import BookingStatus from '@/components/bookingStatus.vue';
 
@@ -65,7 +66,14 @@ export default defineComponent({
       order,
       detailItems,
       bookingList,
+      doctor,
     };
   }
 })
 </script>
+
+<style>
+.text {
+  word-break: break-all;
+}
+</style>

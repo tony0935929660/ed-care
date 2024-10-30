@@ -84,6 +84,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
 import { useApp, useSystem, useUser } from '@/store';
+import { useRouter } from 'vue-router';
 import { INurseMemberInfo, IGetNurseMemberInfo } from '@/Interface';
 import { postNurseMemberInfo, getNurseMemberInfo, getNurseMemberInfoImg, postNurseMemberInfoImg } from '@/api/nurse/memberInfo/index';
 import { showLoadingToast, showToast, showSuccessToast } from 'vant';
@@ -103,6 +104,7 @@ export default defineComponent({
     TextArea,
   },
   setup () {
+    const router = useRouter();
     const appStore = useApp();
     const profile = computed(() => appStore.GET_CLIENT_PROFILE);
 
@@ -214,8 +216,8 @@ export default defineComponent({
       else{
         const formData = new FormData();
         formData.append('userLineId', profile.value._CLIENT_PROFILE_KEY);
-        formData.append('headshot', uploadFile.value.headshot[0].content ?? null);
-        formData.append('certificate', uploadFile.value.certificate[0].content ?? null);
+        formData.append('headshot', uploadFile.value.headshot[0].file ?? null);
+        formData.append('certificate', uploadFile.value.certificate[0].file ?? null);
         let loading = showLoadingToast({
           message: '加载中...',
           forbidClick: true,
@@ -225,6 +227,7 @@ export default defineComponent({
         .then(() => {
           loading.close();
           showSuccessToast('完成上傳');
+          router.back();
         })
         .finally(() => {
           close();

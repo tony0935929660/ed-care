@@ -1,94 +1,12 @@
 <template lang="pug">
 .content
-  .title 新增預約
-  van-form(v-if="!submitChecking")
-    .form
-      Select(v-model="bookingParams.targetRealName" :title="'服務對象真實姓名'" :subtitle="'輸入服務對象真實姓名'" :columns="targetRealName" @click="curSelectKey = 'targetRealName'")
-      Select(v-model="bookingParams.hospital" :title="'醫院'" :subtitle="'請選擇醫院'" :columns="hospital" @click="curSelectKey = 'hospital'")
-      TextField(v-model="bookingParams.department" :title="'門診'" :subtitle="'輸入門診名稱'")
-      TextField(v-model="bookingParams.departmentNumber" :title="'門診號碼'" :subtitle="'輸入門診號碼'")
-      TextField(v-model="bookingParams.clinicNumber" :title="'看診號碼'" :subtitle="'輸入看診號碼'")
-      DatePicker(v-model="bookingParams.appointmentDate" :title="'預約日期'" :subtitle="'輸入預約日期'")
-      TimePicker(v-model="bookingParams.appointmentTime" :title="'預約時間'" :subtitle="'輸入預約時間'")
-      Select(v-model="bookingParams.serviceHours" :title="'服務時數'" :subtitle="'服務計費以實際服務時數為主'" :columns="serviceHours" @click="curSelectKey = 'serviceHours'")
-      .input-row
-        Select(v-model="bookingParams.pickupAddressCity" :title="'接送地址'" :subtitle="'輸入接送地址'" :columns="city" @click="curSelectKey = 'pickupAddressCity'")
-        Select(v-model="bookingParams.pickupAddressTown" :columns="town" @click="curSelectKey = 'pickupAddressTown'")
-      TextField(v-model="bookingParams.pickupAddress")
-      .stepper-btn(@click.prevent="next('02')") 確認預約
-  .complete-container(v-else)
-    .complete-container__title 預約完成
-    .complete-container__content
-      //- .row
-      //-   .label 預定編號:
-      //-   .value {{ bookingParams.orderId }}
-      .row
-        .label 醫院:
-        .value {{ bookingParams.hospital }}
-      .row
-        .label 科別:
-        .value {{ bookingParams.department }}
-      .row
-        .label 門診號碼:
-        .value {{ bookingParams.departmentNumber }}
-      .row
-        .label 預約號碼:
-        .value {{ bookingParams.clinicNumber }}
-      .row
-        .label 日期:
-        .value {{ bookingParams.appointmentDate }}
-      .row
-        .label 時間:
-        .value {{ bookingParams.appointmentTime }}
-      .row
-        .label 服務時數:
-        .value {{ bookingParams.serviceHours }}
-      .row
-        .label 接送地址:
-        .value {{ bookingParams.pickupAddress }}
-      //- .row
-      //-   .label 預估金額:
-      //-   .value {{ bookingParams.estimate }}
-      .row
-        .back-btn(@click.prevent="submitChecking = false") 返回
-        .stepper-btn(@click.prevent="submit") 確認預約
-      //- .return-text(@click.prevent="stepperReset()") 返回新增預約資料
-  van-back-top(offset="100" bottom="12vh") 
-  van-popup(v-model:show="isPickerShow" round position="bottom")
-    van-picker(
-      :columns="columns"
-      cancel-button-text="取消"
-      confirm-button-text="確認"
-      @cancel="onCancel()"
-      @confirm="onConfirm"
-    )
-  van-popup(v-model:show="isDatePickerShow" round position="bottom")
-    van-calendar(
-      v-model="currentDate"
-      confirm-text="確認"
-      title="選擇日期"
-      @confirm="onDateConfirm"
-      :poppable="false"
-      :style="{ height: '500px' }"
-      color="#8C9D87"
-      :formatter="dateFormatter"
-    )
-  van-popup(v-model:show="isTimePickerShow" round position="bottom")
-    van-time-picker(
-      v-model="currentTime"
-      cancel-button-text="取消"
-      confirm-button-text="確認"
-      title="選擇時間"
-      :filter="timePickerFilter"
-      @cancel="onTimeCancel()"
-      @confirm="onTimeConfirm"
-    )
+  .title 查詢預約
+  CollapseCard(:bookingList="apiData")
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed  } from 'vue'
 import { useApp, useSystem } from '@/store';
-import { useRouter } from 'vue-router';
 import { getTargetList, getBookingList, postBooking, getHospitalList } from '@/api/family/booking';
 import { showLoadingToast, showToast } from 'vant';
 import { ISysDropDown, IGetBooking, IGetHospital, IGetCliTarget } from '@/Interface';
@@ -115,10 +33,10 @@ export default defineComponent({
     CollapseCard,
   },
   setup () {
-    const router = useRouter();
-
     /** Stepper */
-    const next = async() => {
+    const finishedStep = ref(['01']);
+    const lineProgressWidth = ref(0);
+    const next = async(curStep: string) => {
       window.scrollTo(0,0);
       if(
         bookingParams.value.targetRealName == '' ||
@@ -133,10 +51,22 @@ export default defineComponent({
         showToast('尚有欄位未填寫完整');
         return ;
       }
-      await onSubmit();
+      // let loading = showLoadingToast({
+      //   message: '載入中...',
+      //   forbidClick: true,
+      //   duration: 0,
+      // });
+      // await onSubmit();
+      // loading.close();
+      // finishedStep.value.push(curStep);
+      // lineProgressWidth.value += 100;
+      // console.log(finishedStep.value, lineProgressWidth.value);
     }
 
     const stepperReset = () => {
+      finishedStep.value = ['01'];
+      lineProgressWidth.value = 0;
+
       //- Reset
       bookingParams.value = {
         targetRealName: '',
@@ -282,27 +212,18 @@ export default defineComponent({
     }
 
     /** Submit Member */
-    const submitChecking = ref(false);
-    const onSubmit = () => {
+    const submitData = ref();
+    
+    const onSubmit = async() => {
       bookingParams.value.pickupAddress = bookingParams.value.pickupAddressCity + bookingParams.value.pickupAddressTown + bookingParams.value.pickupAddress;
-      submitChecking.value = true;
-    };
-    const submit = async() => {
-      let loading = showLoadingToast({
-        message: '載入中...',
-        forbidClick: true,
-        duration: 0,
-      });
-      await onSubmit();
       let params = {
         userLineId: profile._CLIENT_PROFILE_KEY as string,
         ...bookingParams.value
       }
       await postBooking(params)
       .then((res: any) => {
-        loading.close();
+        submitData.value = res;
         console.log(res);
-        router.back();
       })
       .finally(() => loadData());
     }
@@ -313,6 +234,8 @@ export default defineComponent({
     loadData();
 
     return {
+      finishedStep,
+      lineProgressWidth,
       complete,
       targetRealName,
       hospital,
@@ -331,8 +254,7 @@ export default defineComponent({
 
       apiData,
       onSubmit,
-      submit,
-      submitChecking,
+      submitData,
 
       isDatePickerShow,
       currentDate,
@@ -552,22 +474,6 @@ export default defineComponent({
   line-height: 140%; /* 19.6px */
   letter-spacing: 0.56px;
 }
-.back-btn{
-  width: calc(100% - 32px);
-  padding: 12px 16px;
-  margin-bottom: 42px;
-  margin-right: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100px;
-  background: #a3a2a7;
-  color: #FFF;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 140%; /* 19.6px */
-  letter-spacing: 0.56px;
-}
 
 .input-row{
   display: flex;
@@ -576,7 +482,7 @@ export default defineComponent({
 
 .title{
   width: 100%;
-  padding-top: 28px;
+  padding: 28px 0;
   color: #222;
   font-size: 20px;
   font-weight: 600;
