@@ -33,7 +33,7 @@ export default defineComponent({
     const submit = () => {
       emit('update:modelValue', value.value);
     }
-    const verifyEmail = (val) => {
+    const verifyEmail = (val: string) => {
       const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
       return emailPattern.test(val);
     }

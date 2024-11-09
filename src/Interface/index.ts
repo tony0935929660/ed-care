@@ -172,7 +172,7 @@ export interface INurseMemberInfo {
   userLineId: string,
   realName: string,
   gender: string,
-  age: number,
+  age: string,
   contactNumber: string,
   rAddress: string,
   aCompany: string,

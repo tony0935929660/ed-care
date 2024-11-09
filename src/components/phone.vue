@@ -39,7 +39,7 @@ export default defineComponent({
     const submit = () => {
       emit('update:modelValue', value.value);
     }
-    const verifyPhone = (val) => {
+    const verifyPhone = (val: string) => {
       return /^09\d{8}$/.test(val)
     }
     return {

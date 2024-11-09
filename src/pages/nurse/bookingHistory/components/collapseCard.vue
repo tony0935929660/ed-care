@@ -240,4 +240,8 @@ export default defineComponent({
     }
   }
 }
+
+.text {
+  word-break: break-all;
+}
 </style>

@@ -39,8 +39,6 @@ export default defineComponent({
       { label: '緊急聯絡人電話', key: 'cliEmergencyPhone' },
       { label: '疾病', key: 'cliDiseaseStatus' },
       { label: '特殊情形', key: 'cliOtherConditions' },
-      { label: '行動能力', key: 'cliMobilityAssistances' },
-      { label: '服務對象管路對象', key: 'cliPipeStatus' },
       { label: '常用語言', key: 'cliLanguages' },
     ]);
     return { 

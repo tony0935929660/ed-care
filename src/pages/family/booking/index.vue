@@ -147,6 +147,8 @@ export default defineComponent({
         appointmentTime: '',
         serviceHours: '',
         pickupAddress: '',
+        pickupAddressCity: '',
+        pickupAddressTown: '',
       };
     }
 
@@ -226,6 +228,8 @@ export default defineComponent({
       appointmentTime: '',
       serviceHours: '',
       pickupAddress: '',
+      pickupAddressCity: '',
+      pickupAddressTown: '',
     });
 
     /** Select */
@@ -493,9 +497,11 @@ export default defineComponent({
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     .label {
       width: 30%;
+      white-space: nowrap;
     }
   }
   img {

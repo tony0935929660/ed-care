@@ -36,7 +36,7 @@ export default defineComponent({
     /** Stepper */
     const finishedStep = ref(['01']);
     const lineProgressWidth = ref(0);
-    const next = async(curStep: string) => {
+    const next = async() => {
       window.scrollTo(0,0);
       if(
         bookingParams.value.targetRealName == '' ||
@@ -77,6 +77,8 @@ export default defineComponent({
         appointmentTime: '',
         serviceHours: '',
         pickupAddress: '',
+        pickupAddressCity: '',
+        pickupAddressTown: '',
       };
     }
 
@@ -156,6 +158,8 @@ export default defineComponent({
       appointmentTime: '',
       serviceHours: '',
       pickupAddress: '',
+      pickupAddressTown: '',
+      pickupAddressCity: '',
     });
 
     /** Select */

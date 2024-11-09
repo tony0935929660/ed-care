@@ -113,7 +113,7 @@ export default defineComponent({
       userLineId: profile.value._CLIENT_PROFILE_KEY,
       realName: '',
       gender: '',
-      age: null,
+      age: '',
       contactNumber: '',
       rAddress: '',
       aCompany: '',
@@ -205,19 +205,32 @@ export default defineComponent({
         headshot: [],
       }
     }
-    const uploadFile = ref({
-      certificate: [],
-      headshot: [],
-    })
+    interface FileObject {
+      file: File | null;
+    }
+    interface UploadFile {
+      certificate: FileObject[];
+      headshot: FileObject[];
+    }
+    const uploadFile = ref<UploadFile>({
+      certificate: [{ file: null }],
+      headshot: [{ file: null }],
+    });
     const onUpload = async() => {
       if(uploadFile.value.certificate.length == 0 && uploadFile.value.headshot.length == 0){
         showToast('請至少上傳一項文件');
       }
       else{
         const formData = new FormData();
+        const certificate = uploadFile.value.certificate[0].file; 
+        const headshot = uploadFile.value.headshot[0].file; 
         formData.append('userLineId', profile.value._CLIENT_PROFILE_KEY);
-        formData.append('headshot', uploadFile.value.headshot[0].file ?? null);
-        formData.append('certificate', uploadFile.value.certificate[0].file ?? null);
+        if (certificate) {
+          formData.append("certificate", certificate); // Correct usage if `file` is a Blob/File
+        }
+        if (headshot) {
+          formData.append("headshot", headshot);
+        }
         let loading = showLoadingToast({
           message: '加载中...',
           forbidClick: true,
